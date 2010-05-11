@@ -1,0 +1,24 @@
+%form{ :action => ssl_path('/'), :method => 'post' }
+  %label
+    URL to Shorten
+    %input{ :type => 'text', :placeholder => 'http://www.google.com/', :autofocus => true, :name => 'url', :id => 'url', :value => (@url ? @url.url : '') }
+  %input{ :type => 'submit', :value => 'Shorten' }
+
+- if @url
+  %p
+    Shortened URL:
+    %a{ :href => full_url(@url.slug) }= full_url(@url.slug)
+
+%p
+  = Url.count
+  URLs shortened
+
+- if Url.count > 0
+  %p Recently shortened URLs
+  %ul
+    - for url in Url.all(:limit => 10, :order => :created_at.desc)
+      %li
+        %a{ :href => full_url(url.slug) }= url.url
+        (
+        %a{ :href => "/#{ url.slug }/history" } history
+        )

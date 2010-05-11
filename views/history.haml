@@ -1,0 +1,17 @@
+%dl
+  %dt Url
+  %dd
+    %a{ :href => @url.url }= @url.url
+
+  %dt Shortened
+  %dd
+    %a{ :href => full_url(@url.slug) }= full_url(@url.slug)
+
+  %dt Number of times visited
+  %dd= @url.clicks.count
+
+  %dt Recent history
+  %dd
+    %ul
+      - for click in @url.clicks.all(:limit => 10, :order => :created_at.desc)
+        %li== #{ click.ip_address } at #{ click.created_at } from #{ click.referrer }
